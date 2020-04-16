@@ -1,0 +1,22 @@
+sudo: required
+services:
+    - docker
+
+before_install:
+    - docker build -t balaji/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+    - docker run balaji/react-test npm test -- --coverage
+
+after_success:
+    - docker build -t balaji/multi-client ./client
+    - docker build -t balaji/multi-nginx ./nginx
+    - docker build -t balaji/multi-server ./server
+    - docker build -t balaji/multi-worker ./worker
+
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+    - docker push balaji/multi-client
+    - docker push balaji/multi-nginx    
+    - docker push balaji/multi-server  
+    - docker push balaji/multi-worker  
