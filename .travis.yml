@@ -13,8 +13,8 @@ after_success:
     - docker build -t balaji/multi-nginx ./nginx
     - docker build -t balaji/multi-server ./server
     - docker build -t balaji/multi-worker ./worker
-# retry docker login
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+# retry docker login automatically
+    - echo "$DOCKER_PASSWORD" | docker login docker.io -u "$DOCKER_ID" --password-stdin
 
     - docker push balaji/multi-client
     - docker push balaji/multi-nginx    
