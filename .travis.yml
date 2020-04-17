@@ -9,15 +9,16 @@ script:
     - docker run balaji/react-test npm test -- --coverage
 
 after_success:
-    - docker build -t balaji/multi-client ./client
-    - docker build -t balaji/multi-nginx ./nginx
-    - docker build -t balaji/multi-server ./server
-    - docker build -t balaji/multi-worker ./worker
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+    - docker build -t $DOCKER_USERNAME/multi-client ./client
+    - docker build -t $DOCKER_USERNAME/multi-nginx ./nginx
+    - docker build -t $DOCKER_USERNAME/multi-server ./server
+    - docker build -t $DOCKER_USERNAME/multi-worker ./worker
 # retry docker login automatically
 # linked github with docker to check push command
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID2" --password-stdin
 
-    - docker push balaji/multi-client
-    - docker push balaji/multi-nginx    
-    - docker push balaji/multi-server  
-    - docker push balaji/multi-worker  
+    - docker push $DOCKER_USERNAME/multi-client
+    - docker push $DOCKER_USERNAME/multi-nginx    
+    - docker push $DOCKER_USERNAME/multi-server  
+    - docker push $DOCKER_USERNAME/multi-worker  
