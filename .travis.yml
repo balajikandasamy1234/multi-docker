@@ -14,6 +14,7 @@ after_success:
     - docker build -t balaji/multi-server ./server
     - docker build -t balaji/multi-worker ./worker
 # retry docker login automatically
+# linked github with docker to check push command
     - echo "$DOCKER_PASSWORD" | docker login docker.io -u "$DOCKER_ID" --password-stdin
 
     - docker push balaji/multi-client
